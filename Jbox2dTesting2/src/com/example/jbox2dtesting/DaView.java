@@ -12,18 +12,17 @@ import org.jbox2d.dynamics.World;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class DaView extends View
 {
 
-	Vec2 gravity;
-	World world;
-	BodyDef bd;
-	CircleShape cs;
-	FixtureDef fd;
-	Body body;
+	Circle ball;
+
+	Paint ballPaint = new Paint();
 
 	public DaView(Context context, AttributeSet attrs, int defStyleAttr)
 	{
@@ -45,64 +44,54 @@ public class DaView extends View
 
 	private void setup()
 	{
-		gravity = new Vec2(0.0f, -10.0f);
-		world = new World(gravity);
-		bd = new BodyDef();
-		world.setAllowSleep(true);
-		bd.position.set(50, 50);
-		bd.type = BodyType.DYNAMIC;
-		cs = new CircleShape();
-		cs.m_radius = 0.5f;
-		FixtureDef fd = new FixtureDef();
-		fd.shape = cs;
-		fd.density = 0.5f;
-		fd.friction = 0.3f;
-		fd.restitution = 0.5f;
-		body = world.createBody(bd);
-		body.createFixture(fd);
+		//		bd = new BodyDef();
+		//		bd.position.set(1, 0);
+		//		bd.type = BodyType.DYNAMIC;
+		//		cs = new CircleShape();
+		//		cs.setRadius(0.5f);
+		//		FixtureDef fd = new FixtureDef();
+		//		fd.shape = cs;
+		//		fd.density = 0.5f;
+		//		fd.friction = 0.3f;
+		//		fd.restitution = 0.5f;
+		//		body.createFixture(fd);
+		WorldManager.setupWorld();
+		ball = new Circle(1f, 0f, 0.25f, 0.5f, 0.5f, 0.5f);
+		ballPaint.setColor(Color.RED);
 	}
 
-	private static int nextId = 0;
-	public static ArrayList<BaseObject> actors = new ArrayList<BaseObject>();
-
-	private BoxObject bob;
-
-	private static long spawnDelay = 0;
-	private static int screenW;
-	private static int screenH;
+	//	private static int screenW;
+	//	private static int screenH;
 
 	private static float PPM = 128.0f;
 
-	public static Vec2 screenToWorld(Vec2 cords)
+	public static float toMeters(float pixels)
 	{
-		return new Vec2(cords.x / PPM, cords.y / PPM);
+		return pixels / PPM;
 	}
 
-	public static Vec2 worldToScreen(Vec2 cords)
+	public static float toPixels(float meters)
 	{
-		return new Vec2(cords.x * PPM, cords.y * PPM);
+		return meters * PPM;
 	}
 
-	public static float getPPM()
-	{
-		return PPM;
-	}
-
-	public static float getMPP()
-	{
-		return 1.0f / PPM;
-	}
-
-	public static int getNextId()
-	{
-		return nextId++;
-	}
+	//	public static float getPPM()
+	//	{
+	//		return PPM;
+	//	}
+	//
+	//	public static float getMPP()
+	//	{
+	//		return 1.0f / PPM;
+	//	}
 
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
 		long startTime = System.currentTimeMillis();
 		super.onDraw(canvas);
+		WorldManager.step();
+		canvas.drawCircle(toPixels(ball.getX()), toPixels(ball.getY()), toPixels(ball.getRadius()), ballPaint);
 		long timeTook = System.currentTimeMillis() - startTime;
 		if (timeTook < 20)
 		{
@@ -114,7 +103,7 @@ public class DaView extends View
 				e.printStackTrace();
 			}
 		}
-
+		invalidate();
 	}
 
 }

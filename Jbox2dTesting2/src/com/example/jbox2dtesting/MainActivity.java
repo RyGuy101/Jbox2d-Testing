@@ -16,9 +16,9 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
-		View view = new View(this);
+		DaView view = new DaView(this);
 		// GLSurfaceView view = new GLSurfaceView(this);
-		Renderer renderer = new Renderer();
+		//		Renderer renderer = new Renderer();
 		// view.setRenderer(renderer);
 
 		setContentView(view);
