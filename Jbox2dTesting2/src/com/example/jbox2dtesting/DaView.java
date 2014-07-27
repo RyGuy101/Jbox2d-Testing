@@ -21,7 +21,7 @@ public class DaView extends View
 {
 
 	Circle ball;
-
+	Rectangle floor;
 	Paint ballPaint = new Paint();
 
 	public DaView(Context context, AttributeSet attrs, int defStyleAttr)
@@ -44,19 +44,9 @@ public class DaView extends View
 
 	private void setup()
 	{
-		//		bd = new BodyDef();
-		//		bd.position.set(1, 0);
-		//		bd.type = BodyType.DYNAMIC;
-		//		cs = new CircleShape();
-		//		cs.setRadius(0.5f);
-		//		FixtureDef fd = new FixtureDef();
-		//		fd.shape = cs;
-		//		fd.density = 0.5f;
-		//		fd.friction = 0.3f;
-		//		fd.restitution = 0.5f;
-		//		body.createFixture(fd);
 		WorldManager.setupWorld();
-		ball = new Circle(1f, 0f, 0.25f, 0.5f, 0.5f, 0.5f);
+		ball = new Circle(1f, 0f, 0.25f, 0.5f, 0.5f, 1f);
+		floor = new Rectangle(0.1f, 3f, 1f, 0.1f, 0f, 0f, 0f);
 		ballPaint.setColor(Color.RED);
 	}
 
@@ -92,6 +82,8 @@ public class DaView extends View
 		super.onDraw(canvas);
 		WorldManager.step();
 		canvas.drawCircle(toPixels(ball.getX()), toPixels(ball.getY()), toPixels(ball.getRadius()), ballPaint);
+		canvas.drawRect(toPixels(floor.getX()), toPixels(floor.getY() - floor.getHeight()), toPixels(floor.getX() + floor.getWidth()), toPixels(floor.getY()), ballPaint);
+
 		long timeTook = System.currentTimeMillis() - startTime;
 		if (timeTook < 20)
 		{
