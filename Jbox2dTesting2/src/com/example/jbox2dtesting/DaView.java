@@ -85,11 +85,11 @@ public class DaView extends View
 		canvas.drawRect(toPixels(floor.getX()), toPixels(floor.getY() - floor.getHeight()), toPixels(floor.getX() + floor.getWidth()), toPixels(floor.getY()), ballPaint);
 
 		long timeTook = System.currentTimeMillis() - startTime;
-		if (timeTook < 20)
+		if (timeTook < 1000.0 / 60.0)
 		{
 			try
 			{
-				Thread.sleep(20 - timeTook);
+				Thread.sleep((long) (1000.0 / 60.0 - timeTook));
 			} catch (Exception e)
 			{
 				e.printStackTrace();

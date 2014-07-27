@@ -7,7 +7,7 @@ public class WorldManager
 {
 	static Vec2 gravity;
 	static World world;
-	static float timeStep = 1.0f / 50.f;
+	static float timeStep = 1.0f / 60.f;
 	static int velocityIterations = 6;
 	static int positionIterations = 3;
 
@@ -17,6 +17,7 @@ public class WorldManager
 		world = new World(gravity);
 		world.setAllowSleep(true);
 	}
+
 	public static void step()
 	{
 		world.step(timeStep, velocityIterations, positionIterations);
